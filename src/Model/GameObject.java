@@ -1,11 +1,9 @@
+package Model;
+
 // Игровой объект
 public abstract class GameObject {
 
     private Cell _cell = null; //ячейка
-
-    public GameObject() {
-
-    }
 
     //получить ячейку
     public Cell getCell() {

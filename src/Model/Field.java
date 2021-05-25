@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.ArrayList;
 
 // Поле
@@ -31,6 +33,11 @@ public class Field {
                 if (y != height() - 1) _cells.get(x).get(y).setNeighbor(_cells.get(x).get(y + 1), Direction.south());
             }
         }
+
+        //присвоить им позиции на уровне
+        for (int x = 0; x < width(); x++)
+            for (int y = 0; y < height(); y++)
+                _cells.get(x).get(y).setPosition(new Position(x, y));
     }
 
     //получить ячейку из заданной позиции

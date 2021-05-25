@@ -1,6 +1,8 @@
+package Model;
+
 // Направление
 public class Direction {
-    private int _clock;
+    private final int _clock;
 
     private Direction(int clock) {
         _clock = clock;
