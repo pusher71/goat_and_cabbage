@@ -24,6 +24,10 @@ public class Direction {
         return new Direction(9);
     }
 
+    public Direction opposite() {
+        return new Direction((_clock + 6) % 12);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null) return false;

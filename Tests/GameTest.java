@@ -11,10 +11,10 @@ class GameTest {
         Game.MazeCreator creator = game.getMazeCreator();
 
         //расставить игровые объекты на поле
-        creator.addWall(1, 1);
-        creator.addBox(2, 1);
-        creator.addGoat(3, 1, 50);
-        creator.addCabbage(4, 1);
+        creator.addToField(new Wall(), 1, 1);
+        creator.addToField(new Box(), 2, 1);
+        creator.addToField(new Goat(50), 3, 1);
+        creator.addToField(new Cabbage(), 4, 1);
 
         //проверка стены
         GameObject expectedWall = game.getFromPosition(1, 1);
@@ -41,9 +41,9 @@ class GameTest {
         Game.MazeCreator creator = game.getMazeCreator();
 
         //расставить игровые объекты на поле
-        creator.addWall(1, 1);
-        creator.addBox(2, 1);
-        creator.addCabbage(4, 1);
+        creator.addToField(new Wall(), 1, 1);
+        creator.addToField(new Box(), 2, 1);
+        creator.addToField(new Cabbage(), 4, 1);
 
         try {
             game.start();
@@ -61,10 +61,10 @@ class GameTest {
         Game.MazeCreator creator = game.getMazeCreator();
 
         //расставить игровые объекты на поле
-        creator.addWall(1, 1);
-        creator.addBox(2, 1);
-        creator.addGoat(3, 1, 50);
-        creator.addCabbage(4, 1);
+        creator.addToField(new Wall(), 1, 1);
+        creator.addToField(new Box(), 2, 1);
+        creator.addToField(new Goat(50), 3, 1);
+        creator.addToField(new Cabbage(), 4, 1);
 
         //игра не запущена
         Assert.assertEquals(Game.Status.DISABLED, game.getStatus());
@@ -72,16 +72,16 @@ class GameTest {
         game.start();
         //разрядить козу с 50 до 2
         for (int i = 0; i < 24; i++) {
-            game.moveGoat(Direction.north());
-            game.moveGoat(Direction.south());
+            game.moveGoat(Direction.north(), false);
+            game.moveGoat(Direction.south(), false);
         }
 
         //игра в процессе
         Assert.assertEquals(Game.Status.PROCESS, game.getStatus());
 
         //игра проиграна
-        game.moveGoat(Direction.north());
-        game.moveGoat(Direction.south());
+        game.moveGoat(Direction.north(), false);
+        game.moveGoat(Direction.south(), false);
         Assert.assertEquals(Game.Status.LOSE, game.getStatus());
     }
 
@@ -92,15 +92,15 @@ class GameTest {
         Game.MazeCreator creator = game.getMazeCreator();
 
         //расставить игровые объекты на поле
-        creator.addWall(1, 1);
-        creator.addBox(2, 1);
-        creator.addGoat(3, 1, 50);
-        creator.addCabbage(4, 1);
+        creator.addToField(new Wall(), 1, 1);
+        creator.addToField(new Box(), 2, 1);
+        creator.addToField(new Goat(50), 3, 1);
+        creator.addToField(new Cabbage(), 4, 1);
 
         game.start();
 
         //игра выиграна
-        game.moveGoat(Direction.east());
+        game.moveGoat(Direction.east(), false);
         Assert.assertEquals(Game.Status.WIN, game.getStatus());
     }
 }

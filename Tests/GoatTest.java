@@ -31,7 +31,7 @@ class GoatTest {
         Field f = new Field(3, 3);
         Goat g = new Goat(3);
         f.getCell(0, 0).setGameObject(g);
-        g.go(Direction.east());
+        g.go(Direction.east(), false);
 
         Assert.assertEquals(g, f.getCell(1, 0).getGameObject()); //проверка позиции
         Assert.assertEquals(2, g.energy()); //проверка энергии

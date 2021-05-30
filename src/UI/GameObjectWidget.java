@@ -29,6 +29,7 @@ public abstract class GameObjectWidget extends JPanel {
             Position pos = getGameObject().getCell().getPosition();
             setBounds(pos.X * FieldWidget.CELL_SIZE, pos.Y * FieldWidget.CELL_SIZE,
                     FieldWidget.CELL_SIZE, FieldWidget.CELL_SIZE);
+            g.drawImage(getImage(), 0, 0, null);
         }
     }
 

@@ -24,7 +24,7 @@ public class Goat extends MovableObject {
     }
 
     //сходить по направлению
-    public void go(Direction d) {
+    public void go(Direction d, boolean pull) {
 
         //если достаточно энергии
         if (energyEnough()) {
@@ -33,7 +33,7 @@ public class Goat extends MovableObject {
             if (neighbor != null) {
                 GameObject neighborObject = neighbor.getGameObject(); //объект на соседней ячейке
 
-                if (neighborObject instanceof MovableObject) //если соседний объект - ящик
+                if (neighborObject instanceof MovableObject) //если соседний объект сдвигаемый
                     ((MovableObject)neighborObject).move(d); //сдвинуть его
                 else if (neighborObject instanceof Cabbage) { //иначе если капуста
                     eatCabbage((Cabbage)neighborObject); //съесть её
@@ -41,8 +41,20 @@ public class Goat extends MovableObject {
                 }
 
                 //если соседняя ячейка пуста
-                if (neighbor.isEmpty()) {
+                if (emptyAbove(d)) {
+
                     move(d); //сдвинуться на неё
+
+                    if (pull) { //режим притягивания объектов
+                        //притянуть возможный сдвигаемый объект
+                        Cell neighbor1 = getCell().getNeighbor(d.opposite()).getNeighbor(d.opposite());
+                        if (neighbor1 != null) {
+                            GameObject neighborObject1 = neighbor1.getGameObject();
+                            if (neighborObject1 instanceof MovableObject)
+                                ((MovableObject)neighborObject1).move(d);
+                        }
+                    }
+
                     lowerEnergy(); //потратить энергию
                 }
             }

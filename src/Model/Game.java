@@ -15,40 +15,20 @@ public class Game {
         }
 
         //поместить игровой объект на поле
-        private void addToField(GameObject go, int x, int y) {
-            if (fieldExists())
+        public GameObject addToField(GameObject go, int x, int y) {
+
+            if (fieldExists()) { //поле задано
+                //установить объект на поле
                 _field.getCell(x, y).setGameObject(go);
-            else
+
+                //захватить козу
+                if (go instanceof Goat)
+                    _game._goat = (Goat)go;
+
+                return go;
+            }
+            else //поле не задано
                 throw new RuntimeException("Field is not specified!");
-        }
-
-        //добавить стену на поле
-        public Wall addWall(int x, int y) {
-            Wall go = new Wall();
-            addToField(go, x, y);
-            return go;
-        }
-
-        //добавить ящик на поле
-        public Box addBox(int x, int y) {
-            Box go = new Box();
-            addToField(go, x, y);
-            return go;
-        }
-
-        //добавить козу на поле
-        public Goat addGoat(int x, int y, int energy) {
-            Goat go = new Goat(energy);
-            addToField(go, x, y);
-            _game._goat = go;
-            return go;
-        }
-
-        //добавить капусту на поле
-        public Cabbage addCabbage(int x, int y) {
-            Cabbage go = new Cabbage();
-            addToField(go, x, y);
-            return go;
         }
     }
 
@@ -98,10 +78,10 @@ public class Game {
     }
 
     //двигать козу
-    public void moveGoat(Direction d) {
+    public void moveGoat(Direction d, boolean pull) {
         //если игра в процессе
         if (_status == Status.PROCESS) {
-            _goat.go(d); //коза совершает ход
+            _goat.go(d, pull); //коза совершает ход
             defineExodus(); //определяется возможный исход
         }
     }

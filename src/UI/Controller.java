@@ -1,13 +1,13 @@
 package UI;
 
-import Model.Game;
-import Model.Direction;
+import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 
 public class Controller extends JFrame {
 
@@ -25,13 +25,13 @@ public class Controller extends JFrame {
 
         createGame();
 
-        content.add(Box.createRigidArea(new Dimension(0,10)));
+        content.add(javax.swing.Box.createRigidArea(new Dimension(0,10)));
 
         createStartButton();
         createEnergyWidget();
         createStatusWidget();
 
-        content.add(Box.createRigidArea(new Dimension(0,10)));
+        content.add(javax.swing.Box.createRigidArea(new Dimension(0,10)));
 
         pack(); // подгоняем размеры окна под его содержимое
         this.setResizable(false); // в играх редко приходится изменять размер окна
@@ -48,10 +48,37 @@ public class Controller extends JFrame {
         _game = new Game();
         //создать игровые объекты и соответствующие виджеты
         Game.MazeCreator creator = _game.getMazeCreator();
-        _fw.add(new WallWidget(creator.addWall(1, 1)));
-        _fw.add(new BoxWidget(creator.addBox(2, 1)));
-        _fw.add(new GoatWidget(creator.addGoat(3, 1, 50)));
-        _fw.add(new CabbageWidget(creator.addCabbage(4, 1)));
+
+        _fw.add(new WallWidget((Wall)creator.addToField(new Wall(), 1, 1)));
+        _fw.add(new BoxWidget((Model.Box)creator.addToField(new Model.Box(), 2, 1)));
+        _fw.add(new GoatWidget((Goat)creator.addToField(new Goat(150), 3, 1)));
+        _fw.add(new CabbageWidget((Cabbage)creator.addToField(new Cabbage(), 4, 1)));
+        _fw.add(new BoxWidget((Model.Box)creator.addToField(new Model.Box(), 4, 2)));
+        _fw.add(new BoxMagneticWidget((BoxMagnetic)creator.addToField(new BoxMagnetic(new HashMap<Direction, Pole>() {{
+            put(Direction.north(), Pole.PLUS);
+            put(Direction.west(), Pole.MINUS);
+            put(Direction.south(), Pole.MINUS);
+            put(Direction.east(), Pole.PLUS);
+        }}), 2, 3)));
+        _fw.add(new BoxMagneticWidget((BoxMagnetic)creator.addToField(new BoxMagnetic(new HashMap<Direction, Pole>() {{
+            put(Direction.north(), Pole.PLUS);
+            put(Direction.west(), Pole.PLUS);
+            put(Direction.south(), Pole.MINUS);
+            put(Direction.east(), Pole.MINUS);
+        }}), 3, 4)));
+        _fw.add(new BoxMagneticWidget((BoxMagnetic)creator.addToField(new BoxMagnetic(new HashMap<Direction, Pole>() {{
+            put(Direction.north(), Pole.MINUS);
+            put(Direction.west(), Pole.PLUS);
+            put(Direction.south(), Pole.PLUS);
+            put(Direction.east(), Pole.MINUS);
+        }}), 6, 3)));
+        _fw.add(new BoxMagneticWidget((BoxMagnetic)creator.addToField(new BoxMagnetic(new HashMap<Direction, Pole>() {{
+            put(Direction.north(), Pole.MINUS);
+            put(Direction.west(), Pole.MINUS);
+            put(Direction.south(), Pole.PLUS);
+            put(Direction.east(), Pole.PLUS);
+        }}), 7, 4)));
+        _fw.add(new BoxMetalWidget((BoxMetal)creator.addToField(new BoxMetal(), 8, 5)));
     }
 
     //создать виджет поля
@@ -108,6 +135,8 @@ public class Controller extends JFrame {
 
     private class KeyController implements KeyListener {
 
+        boolean shiftPressed = false; //шифт зажат
+
         @Override
         public void keyTyped(KeyEvent e) {
         }
@@ -118,16 +147,19 @@ public class Controller extends JFrame {
 
             // Управление козой
             if(code == KeyEvent.VK_UP) {         // перемещаемся вверх
-                _game.moveGoat(Direction.north());
+                _game.moveGoat(Direction.north(), shiftPressed);
             }
             else if(code == KeyEvent.VK_DOWN) {  // перемещаемся вниз
-                _game.moveGoat(Direction.south());
+                _game.moveGoat(Direction.south(), shiftPressed);
             }
             else if(code == KeyEvent.VK_LEFT) {  // перемещаемся влево
-                _game.moveGoat(Direction.west());
+                _game.moveGoat(Direction.west(), shiftPressed);
             }
             else if(code == KeyEvent.VK_RIGHT) { // перемещаемся вправо
-                _game.moveGoat(Direction.east());
+                _game.moveGoat(Direction.east(), shiftPressed);
+            }
+            else if (code == KeyEvent.VK_SHIFT) { //включить шифт
+                shiftPressed = true;
             }
 
             updateStatus(); // Обновляем статус
@@ -136,6 +168,9 @@ public class Controller extends JFrame {
 
         @Override
         public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_SHIFT) { //отключить шифт
+                shiftPressed = false;
+            }
         }
     }
 }
