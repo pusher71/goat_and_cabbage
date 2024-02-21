@@ -1,6 +1,6 @@
 package UI;
 
-import Model.Box;
+import Model.*;
 
 // Виджет ящика
 public class BoxWidget extends GameObjectWidget {

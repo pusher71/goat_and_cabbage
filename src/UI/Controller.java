@@ -51,34 +51,54 @@ public class Controller extends JFrame {
 
         _fw.add(new WallWidget((Wall)creator.addToField(new Wall(), 1, 1)));
         _fw.add(new BoxWidget((Model.Box)creator.addToField(new Model.Box(), 2, 1)));
+        _fw.add(new InterlockedBallWidget((InterlockedBall)creator.addToField(new Model.InterlockedBall(), 2, 2)));
         _fw.add(new GoatWidget((Goat)creator.addToField(new Goat(150), 3, 1)));
         _fw.add(new CabbageWidget((Cabbage)creator.addToField(new Cabbage(), 4, 1)));
         _fw.add(new BoxWidget((Model.Box)creator.addToField(new Model.Box(), 4, 2)));
-        _fw.add(new BoxMagneticWidget((BoxMagnetic)creator.addToField(new BoxMagnetic(new HashMap<Direction, Pole>() {{
+
+        InterlockedBox ib23 = new InterlockedBox();
+        ib23.setMetalProperty(new MagneticProperty(ib23, new HashMap<Direction, Pole>() {{
             put(Direction.north(), Pole.PLUS);
             put(Direction.west(), Pole.MINUS);
             put(Direction.south(), Pole.MINUS);
             put(Direction.east(), Pole.PLUS);
-        }}), 2, 3)));
-        _fw.add(new BoxMagneticWidget((BoxMagnetic)creator.addToField(new BoxMagnetic(new HashMap<Direction, Pole>() {{
+        }}));
+        _fw.add(new InterlockedBoxWidget((Model.InterlockedBox)creator.addToField(ib23, 2, 3)));
+
+        InterlockedBox ib34 = new InterlockedBox();
+        ib34.setMetalProperty(new MagneticProperty(ib34, new HashMap<Direction, Pole>() {{
             put(Direction.north(), Pole.PLUS);
             put(Direction.west(), Pole.PLUS);
             put(Direction.south(), Pole.MINUS);
             put(Direction.east(), Pole.MINUS);
-        }}), 3, 4)));
-        _fw.add(new BoxMagneticWidget((BoxMagnetic)creator.addToField(new BoxMagnetic(new HashMap<Direction, Pole>() {{
+        }}));
+        _fw.add(new InterlockedBoxWidget((Model.InterlockedBox)creator.addToField(ib34, 3, 4)));
+
+        InterlockedBox ib63 = new InterlockedBox();
+        ib63.setMetalProperty(new MagneticProperty(ib63, new HashMap<Direction, Pole>() {{
             put(Direction.north(), Pole.MINUS);
             put(Direction.west(), Pole.PLUS);
             put(Direction.south(), Pole.PLUS);
             put(Direction.east(), Pole.MINUS);
-        }}), 6, 3)));
-        _fw.add(new BoxMagneticWidget((BoxMagnetic)creator.addToField(new BoxMagnetic(new HashMap<Direction, Pole>() {{
+        }}));
+        _fw.add(new InterlockedBoxWidget((Model.InterlockedBox)creator.addToField(ib63, 6, 3)));
+
+        InterlockedBox ib74 = new InterlockedBox();
+        ib74.setMetalProperty(new MagneticProperty(ib74, new HashMap<Direction, Pole>() {{
             put(Direction.north(), Pole.MINUS);
             put(Direction.west(), Pole.MINUS);
             put(Direction.south(), Pole.PLUS);
             put(Direction.east(), Pole.PLUS);
-        }}), 7, 4)));
-        _fw.add(new BoxMetalWidget((BoxMetal)creator.addToField(new BoxMetal(), 8, 5)));
+        }}));
+        _fw.add(new InterlockedBoxWidget((Model.InterlockedBox)creator.addToField(ib74, 7, 4)));
+
+        InterlockedBox ib85 = new InterlockedBox();
+        ib85.setMetalProperty(new MetalProperty(ib85));
+        _fw.add(new InterlockedBoxWidget((Model.InterlockedBox)creator.addToField(ib85, 8, 5)));
+
+        InterlockedBall ib97 = new InterlockedBall();
+        ib97.setMetalProperty(new MetalProperty(ib97));
+        _fw.add(new InterlockedBallWidget((Model.InterlockedBall)creator.addToField(ib97, 9, 7)));
     }
 
     //создать виджет поля
